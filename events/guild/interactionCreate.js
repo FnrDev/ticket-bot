@@ -1,6 +1,8 @@
 const Timeout = new Set()
 const { MessageEmbed } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
+const wait = require('util').promisify(setTimeout);
+const settings = require('../../settings.json');
 
 module.exports = async(client, interaction) => {
     if (interaction.isCommand() || interaction.isContextMenu()) {
@@ -18,10 +20,10 @@ module.exports = async(client, interaction) => {
 				}
 			}
 			if (command.permission) {
-				if (!interaction.member.permission.has(command.permission)) {
+				if (!interaction.member.permissions.has(command.permission)) {
 					const embed = new MessageEmbed()
 					.setTitle('Missing Permission')
-					.setDescription(`:x: You need \`${command.permission}\` to use this command`)
+					.setDescription(`:x: You need \`${command.permission}\` permission to use this command`)
 					.setColor('#ff0000')
 					.setFooter(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
 					.setTimestamp()
@@ -46,6 +48,14 @@ module.exports = async(client, interaction) => {
 		} catch (error) {
 			console.error(error);
 			await interaction.reply({ content: ':x: There was an error while executing this command!', ephemeral: true });
+		}
+	}
+	if (interaction.isButton()) {
+		if (interaction.customId === 'close') {
+			const replaceText = settings.deleteTicketMessage.replace("{time}", humanizeDuration(settings.deleteTicketTime))
+			await interaction.reply(replaceText);
+			await wait(settings.deleteTicketTime);
+			interaction.channel.delete();
 		}
 	}
 } 

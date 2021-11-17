@@ -1,4 +1,4 @@
-# 📃 ticket-bot
+# 📃 Ticket Bot
 
 
 ## Simple ticket discord bot.

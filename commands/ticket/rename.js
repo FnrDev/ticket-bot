@@ -16,12 +16,19 @@ module.exports = {
     ticketOnly: true,
     run: async(interaction) => {
         const name = interaction.options.getString('new_name');
-        await interaction.channel.edit({ name: name });
-        const embed = new Discord.MessageEmbed()
-        .setDescription(`👌 Renamed ticket channel to **${name}**`)
-        .setColor(settings.embedColor);
-        interaction.reply({
-            embeds: [embed]
-        });
+        try {
+            await interaction.channel.edit({ name: name });
+            const embed = new Discord.MessageEmbed()
+            .setDescription(`👌 Renamed ticket channel to **${name}**`)
+            .setColor(settings.embedColor);
+            interaction.reply({
+                embeds: [embed]
+            });
+        } catch (e) {
+            return interaction.reply({
+                content: e,
+                ephemeral: true
+            })
+        }
     }
 }

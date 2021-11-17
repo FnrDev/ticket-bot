@@ -23,15 +23,22 @@ module.exports = {
                 ephemeral: true
             });
         }
-        await interaction.channel.permissionOverwrites.edit(member, {
-            VIEW_CHANNEL: true,
-            SEND_MESSAGES: true
-        });
-        const embed = new MessageEmbed()
-        .setDescription(`**👌 Added ${member} to the ticket.**`)
-        .setColor(settings.embedColor)
-        interaction.reply({
-            embeds: [embed]
-        })
+        try {
+            await interaction.channel.permissionOverwrites.edit(member, {
+                VIEW_CHANNEL: true,
+                SEND_MESSAGES: true
+            });
+            const embed = new MessageEmbed()
+            .setDescription(`**👌 Added ${member} to the ticket.**`)
+            .setColor(settings.embedColor)
+            interaction.reply({
+                embeds: [embed]
+            })
+        } catch (e) {
+            return interaction.reply({
+                content: e,
+                ephemeral: true
+            })
+        }
     }
 }

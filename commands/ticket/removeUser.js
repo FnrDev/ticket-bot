@@ -23,12 +23,19 @@ module.exports = {
                 ephemeral: true
             });
         }
-        await interaction.channel.permissionOverwrites.delete(member, `By: ${interaction.user.tag}, Removed user from ticket`);
-        const embed = new MessageEmbed()
-        .setDescription(`**👌 Removed ${member} from the ticket.**`)
-        .setColor(settings.embedColor)
-        interaction.reply({
-            embeds: [embed]
-        })
+        try {
+            await interaction.channel.permissionOverwrites.delete(member, `By: ${interaction.user.tag}, Removed user from ticket`);
+            const embed = new MessageEmbed()
+            .setDescription(`**👌 Removed ${member} from the ticket.**`)
+            .setColor(settings.embedColor)
+            interaction.reply({
+                embeds: [embed]
+            })
+        } catch (e) {
+            return interaction.reply({
+                content: e,
+                ephemeral: true
+            })
+        }
     }
 }

@@ -12,7 +12,7 @@ module.exports = {
             required: true
         }
     ],
-    permission: "MANAGE_CHANNELS",
+    modOnly: true,
     ticketOnly: true,
     run: async(interaction) => {
         const name = interaction.options.getString('new_name');

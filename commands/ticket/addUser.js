@@ -13,6 +13,7 @@ module.exports = {
         }
     ],
     timeout: 3000,
+    modOnly: true,
     ticketOnly: true,
     run: async(interaction) => {
         const user = interaction.options.getUser('user');

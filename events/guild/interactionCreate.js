@@ -49,6 +49,14 @@ module.exports = async(client, interaction) => {
 					})
 				}
 			}
+			if (command.modOnly) {
+				if (!interaction.member.roles.cache.has(settings.modRole)) {
+					return interaction.reply({
+						content: ":x: Only members with mod role can use this commnad.",
+						ephemeral: true
+					})
+				}
+			}
 			command.run(interaction, client);
 			Timeout.add(`${interaction.user.id}${command.name}`)
 			setTimeout(() => {

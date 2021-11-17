@@ -14,6 +14,7 @@ module.exports = {
     ],
     timeout: 3000,
     ticketOnly: true,
+    modOnly: true,
     run: async(interaction) => {
         const user = interaction.options.getUser('user');
         await interaction.channel.permissionOverwrites.delete(user, `By: ${interaction.user.tag}, Removed user from ticket`);

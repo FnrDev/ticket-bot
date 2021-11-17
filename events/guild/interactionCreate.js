@@ -15,7 +15,7 @@ module.exports = async(client, interaction) => {
 					const embed = new MessageEmbed()
 					.setTitle('You are in timeout!')
 					.setDescription(`You need to wait **${humanizeDuration(command.timeout, { round: true })}** to use command again`)
-					.setColor('#ff0000')
+					.setColor(settings.errorEmbedColor)
 					return interaction.reply({ embeds: [embed], ephemeral: true })
 				}
 			}
@@ -24,7 +24,7 @@ module.exports = async(client, interaction) => {
 					const embed = new MessageEmbed()
 					.setTitle('Missing Permission')
 					.setDescription(`:x: You need \`${command.permission}\` permission to use this command`)
-					.setColor('#ff0000')
+					.setColor(settings.errorEmbedColor)
 					.setFooter(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
 					.setTimestamp()
 					return interaction.reply({ embeds: [embed], ephemeral: true })

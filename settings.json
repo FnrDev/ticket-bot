@@ -4,5 +4,7 @@
     "successEmbedColor": "#E130DE",
     "errorEmbedColor": "#ff0000",
     "deleteTicketTime": 5000,
-    "deleteTicketMessage": "**:x: Delete ticket channel in {time}**"
+    "closeTicketTime": 5000,
+    "closeTicketMessage": "**:x: Closing ticket channel in {time}**",
+    "deletTicketMessage": "**:x: Deleting ticket channel in {time}**"
 }

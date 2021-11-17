@@ -45,7 +45,7 @@ module.exports = {
             new MessageButton()
             .setCustomId('close')
             .setStyle('DANGER')
-            .setLabel('Delete Ticket')
+            .setLabel('Close Ticket')
             .setEmoji('🔒')
         )
         ticketChannel.send({

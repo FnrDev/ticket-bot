@@ -1,5 +1,5 @@
 const Timeout = new Set()
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
 const wait = require('util').promisify(setTimeout);
 const settings = require('../../settings.json');
@@ -40,6 +40,15 @@ module.exports = async(client, interaction) => {
 					return interaction.reply({ content: "Only ownership of this server can use this command", ephemeral: true })
 				}
 			}
+			if (command.ticketOnly) {
+				const getTicketCategory = interaction.guild.channels.cache.find(r => r.type === 'GUILD_CATEGORY' && r.name === 'tickets');
+				if (interaction.channel.parentId !== getTicketCategory.id) {
+					return interaction.reply({
+						content: ":x: You can't use this command outside ticket channel.",
+						ephemeral: true
+					})
+				}
+			}
 			command.run(interaction, client);
 			Timeout.add(`${interaction.user.id}${command.name}`)
 			setTimeout(() => {
@@ -52,10 +61,49 @@ module.exports = async(client, interaction) => {
 	}
 	if (interaction.isButton()) {
 		if (interaction.customId === 'close') {
-			const replaceText = settings.deleteTicketMessage.replace("{time}", humanizeDuration(settings.deleteTicketTime))
-			await interaction.reply(replaceText);
+			const row = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+				.setCustomId('confirm_close')
+				.setStyle('DANGER')
+				.setLabel('Close')
+			)
+			interaction.reply({
+				content: "Are you sure you would like to close this ticket?",
+				components: [row]
+			});
+		}
+		if (interaction.customId === 'confirm_close') {
+			const msg = await interaction.deferReply({ fetchReply: true });
+			await interaction.channel.permissionOverwrites.delete(interaction.user, `Closed ticket.`);
+			await interaction.deleteReply();
+			const embed = new MessageEmbed()
+			.setDescription(`**🔐 Ticket closed by ${interaction.user}**`)
+			.setColor(settings.embedColor)
+			await msg.channel.send({
+				embeds: [embed]
+			});
+			const dataEmbed = new MessageEmbed()
+			.setDescription("**Support Team ticket controls**")
+			.setColor(settings.embedColor)
+			const row = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+				.setCustomId('staff_delete')
+				.setStyle('DANGER')
+				.setLabel('Delete')
+				.setEmoji('🔒')
+			)
+			msg.channel.send({
+				embeds: [dataEmbed],
+				components: [row]
+			});
+		}
+		if (interaction.customId === 'staff_delete') {
+			const text = settings.deletTicketMessage.replace('{time}', humanizeDuration(settings.deleteTicketTime, { round: true }));
+			interaction.reply(text);
 			await wait(settings.deleteTicketTime);
-			interaction.channel.delete();
+			interaction.channel.delete(`By: ${interaction.user.tag}, Delete ticket.`);
 		}
 	}
 } 

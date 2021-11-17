@@ -16,13 +16,19 @@ module.exports = {
     modOnly: true,
     ticketOnly: true,
     run: async(interaction) => {
-        const user = interaction.options.getUser('user');
-        await interaction.channel.permissionOverwrites.edit(user, {
+        const member = interaction.options.getMember('user');
+        if (interaction.channel.permissionsFor(member).has('VIEW_CHANNEL')) {
+            return interaction.reply({
+                content: `:x: ${member} already in ticket channel.`,
+                ephemeral: true
+            });
+        }
+        await interaction.channel.permissionOverwrites.edit(member, {
             VIEW_CHANNEL: true,
             SEND_MESSAGES: true
         });
         const embed = new MessageEmbed()
-        .setDescription(`**👌 Added ${user} to the ticket.**`)
+        .setDescription(`**👌 Added ${member} to the ticket.**`)
         .setColor(settings.embedColor)
         interaction.reply({
             embeds: [embed]

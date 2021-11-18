@@ -16,13 +16,26 @@ module.exports = {
     ticketOnly: true,
     modOnly: true,
     run: async(interaction) => {
-        const user = interaction.options.getUser('user');
-        await interaction.channel.permissionOverwrites.delete(user, `By: ${interaction.user.tag}, Removed user from ticket`);
-        const embed = new MessageEmbed()
-        .setDescription(`**👌 Removed ${user} from the ticket.**`)
-        .setColor(settings.embedColor)
-        interaction.reply({
-            embeds: [embed]
-        })
+        const member = interaction.options.getMember('user');
+        if (!interaction.channel.permissionsFor(member).has('VIEW_CHANNEL')) {
+            return interaction.reply({
+                content: `:x: ${member} is not in ticket channel.`,
+                ephemeral: true
+            });
+        }
+        try {
+            await interaction.channel.permissionOverwrites.delete(member, `By: ${interaction.user.tag}, Removed user from ticket`);
+            const embed = new MessageEmbed()
+            .setDescription(`**👌 Removed ${member} from the ticket.**`)
+            .setColor(settings.embedColor)
+            interaction.reply({
+                embeds: [embed]
+            })
+        } catch (e) {
+            return interaction.reply({
+                content: e,
+                ephemeral: true
+            })
+        }
     }
 }

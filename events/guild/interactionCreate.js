@@ -111,6 +111,20 @@ module.exports = async(client, interaction) => {
 			const text = settings.deletTicketMessage.replace('{time}', humanizeDuration(settings.deleteTicketTime, { round: true }));
 			interaction.reply(text);
 			await wait(settings.deleteTicketTime);
+			const logChannel = client.channels.cache.get(settings.logChannel);
+			if (!logChannel) return;
+			const embed = new MessageEmbed()
+			.setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
+			.setDescription(`${interaction.user} deleted a **#${interaction.channel.name}** ticket.`)
+			.addField("Ticket ID:", interaction.channel.id, true)
+			.addField("Ticket Created At:", `<t:${Math.floor(interaction.channel.createdTimestamp / 1000)}:R>`, true)
+			.addField("Ticket Deleted At:", `<t:${Math.floor(Date.now() / 1000)}:R>`, true)
+			.setColor(settings.embedColor)
+			.setTimestamp()
+			.setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))
+			await logChannel.send({
+				embeds: [embed]
+			})
 			interaction.channel.delete(`By: ${interaction.user.tag}, Delete ticket.`);
 		}
 	}

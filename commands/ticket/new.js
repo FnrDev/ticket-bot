@@ -5,7 +5,7 @@ module.exports = {
     name: "new",
     description: "Create a new ticket",
     timeout: 10000,
-    run: async(interaction) => {
+    run: async(interaction, client) => {
         const ticketCatgory = interaction.guild.channels.cache.find(r => r.type === 'GUILD_CATEGORY' && r.name === 'tickets');
         if (!ticketCatgory) {
             const embed = new MessageEmbed()
@@ -59,5 +59,18 @@ module.exports = {
         interaction.reply({
             embeds: [successEmbed]
         });
+        const logChannel = client.channels.cache.get(config.logChannel);
+        if (!logChannel) return;
+        const logEmbed = new MessageEmbed()
+        .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
+        .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))
+        .setDescription(`${interaction.user} Created a new ticket ${ticketChannel}`)
+        .addField("Ticket ID:", ticketChannel.id, true)
+        .addField("Ticket Created At:", `<t:${Math.floor(ticketChannel.createdTimestamp / 1000)}:R>`, true)
+        .setColor(config.embedColor)
+        .setTimestamp()
+        logChannel.send({
+            embeds: [logEmbed]
+        })
     }
 }

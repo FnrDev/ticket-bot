@@ -6,5 +6,6 @@
     "deleteTicketTime": 5000,
     "closeTicketTime": 5000,
     "closeTicketMessage": "**:x: Closing ticket channel in {time}**",
-    "deletTicketMessage": "**:x: Deleting ticket channel in {time}**"
+    "deletTicketMessage": "**:x: Deleting ticket channel in {time}**",
+    "logChannel": "901156978817122354"
 }

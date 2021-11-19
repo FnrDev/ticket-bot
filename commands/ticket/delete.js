@@ -43,7 +43,7 @@ module.exports = {
                 await logChannel.send({
                     embeds: [embed]
                 })
-                return interaction.channel.delete();
+                return interaction.channel.delete(`By: ${interaction.user.tag}`);
             }
             if (i.customId === 'cancel') {
                 await interaction.deleteReply();

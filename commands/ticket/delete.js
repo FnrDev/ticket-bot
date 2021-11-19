@@ -1,11 +1,12 @@
-const { MessageActionRow, MessageButton } = require('discord.js');
+const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
+const settings = require('../../settings.json');
 
 module.exports = {
     name: "delete",
     description: "Delete a ticket channel.",
     modOnly: true,
     ticketOnly: true,
-    run: async(interaction) => {
+    run: async(interaction, client) => {
         const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
@@ -28,6 +29,20 @@ module.exports = {
         const collector = interaction.channel.createMessageComponentCollector({ filter: filter, time: 20000 });
         collector.on('collect', async i => {
             if (i.customId === 'delete_ticket') {
+                const logChannel = client.channels.cache.get(settings.logChannel);
+                if (!logChannel) return;
+                const embed = new MessageEmbed()
+                .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
+                .setDescription(`${interaction.user} deleted a **#${interaction.channel.name}** ticket.`)
+                .addField("Ticket ID:", interaction.channel.id, true)
+                .addField("Ticket Created At:", `<t:${Math.floor(interaction.channel.createdTimestamp / 1000)}:R>`, true)
+                .addField("Ticket Deleted At:", `<t:${Math.floor(Date.now() / 1000)}:R>`, true)
+                .setColor(settings.embedColor)
+                .setTimestamp()
+                .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))
+                await logChannel.send({
+                    embeds: [embed]
+                })
                 return interaction.channel.delete();
             }
             if (i.customId === 'cancel') {

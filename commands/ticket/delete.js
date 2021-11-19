@@ -19,7 +19,7 @@ module.exports = {
             .setStyle('SECONDARY')
             .setLabel('Cancel')
         )
-        const msg = await interaction.reply({
+        await interaction.reply({
             content: `Are you sure to delete **#${interaction.channel.name}** ticket.`,
             fetchReply: true,
             components: [row]

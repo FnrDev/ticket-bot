@@ -15,6 +15,7 @@ module.exports = {
     timeout: 3000,
     ticketOnly: true,
     modOnly: true,
+    category: "ticket",
     run: async(interaction) => {
         const member = interaction.options.getMember('user');
         if (!interaction.channel.permissionsFor(member).has('VIEW_CHANNEL')) {

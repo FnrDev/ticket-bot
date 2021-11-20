@@ -6,6 +6,7 @@ module.exports = {
     description: "Delete a ticket channel.",
     modOnly: true,
     ticketOnly: true,
+    category: "ticket",
     run: async(interaction, client) => {
         const row = new MessageActionRow()
         .addComponents(

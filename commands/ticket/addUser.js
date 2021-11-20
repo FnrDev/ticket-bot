@@ -12,6 +12,7 @@ module.exports = {
             required: true
         }
     ],
+    category: "ticket",
     timeout: 3000,
     modOnly: true,
     ticketOnly: true,

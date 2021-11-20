@@ -56,6 +56,12 @@ module.exports = {
                     description: "Show all commands in info category.",
                     emoji: "ℹ",
                     value: "info"
+                },
+                {
+                    label: "Ticket",
+                    description: "Show all commands in ticket category.",
+                    emoji: "📃",
+                    value: "ticket"
                 }
             ])
         )
@@ -98,6 +104,24 @@ module.exports = {
                     content: null,
                     components: []
                 });
+            }
+            if (i.values.includes('ticket')) {
+                await i.deferUpdate();
+                let loopTicketCategory = '';
+                client.commands.filter(r => r.category === 'ticket').forEach(cmd => {
+                    if (!cmd.description) return;
+                    loopTicketCategory += `**\`/${cmd.name}\`** - ${cmd.description}\n`;
+                });
+                const embed = new MessageEmbed()
+                .setTitle('Ticket Commands:')
+                .setDescription(loopTicketCategory)
+                .setColor(interaction.guild.me.displayHexColor)
+                .setFooter(`Requested by ${interaction.user.tag}`, interaction.user.displayAvatarURL({ dynamic: true }))
+                return i.editReply({
+                    embeds: [embed],
+                    content: null,
+                    components: []
+                })
             }
         })
     }

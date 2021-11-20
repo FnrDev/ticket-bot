@@ -14,6 +14,7 @@ module.exports = {
     ],
     modOnly: true,
     ticketOnly: true,
+    category: "ticket",
     run: async(interaction) => {
         const name = interaction.options.getString('new_name');
         try {

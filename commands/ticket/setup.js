@@ -5,6 +5,7 @@ module.exports = {
     name: "setup",
     description: "Setup ticket category in your server",
     permission: "ADMINISTRATOR",
+    category: "ticket",
     run: async(interaction, client) => {
         const checkTicketCategory = interaction.guild.channels.cache.find(r => r.type === 'GUILD_CATEGORY' && r.name === 'tickets');
         if (checkTicketCategory) {

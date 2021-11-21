@@ -15,6 +15,7 @@ module.exports = {
     modOnly: true,
     ticketOnly: true,
     category: "ticket",
+    usage: "/rename **new_name:**Premium",
     run: async(interaction) => {
         const name = interaction.options.getString('new_name');
         try {

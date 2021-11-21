@@ -13,6 +13,7 @@ module.exports = {
         }
     ],
     category: "ticket",
+    usage: "/add **user:**Fnr#0017",
     timeout: 3000,
     modOnly: true,
     ticketOnly: true,

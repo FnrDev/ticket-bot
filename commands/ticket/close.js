@@ -7,6 +7,7 @@ module.exports = {
     ticketOnly: true,
     modOnly: true,
     category: "ticket",
+    usage: "/close",
     run: async(interaction) => {
         await interaction.channel.permissionOverwrites.set([
             {

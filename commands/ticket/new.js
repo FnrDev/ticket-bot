@@ -6,6 +6,7 @@ module.exports = {
     description: "Create a new ticket",
     timeout: 10000,
     category: "ticket",
+    usage: "/new",
     run: async(interaction, client) => {
         const ticketCatgory = interaction.guild.channels.cache.find(r => r.type === 'GUILD_CATEGORY' && r.name === 'tickets');
         if (!ticketCatgory) {

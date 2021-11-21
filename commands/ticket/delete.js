@@ -7,6 +7,7 @@ module.exports = {
     modOnly: true,
     ticketOnly: true,
     category: "ticket",
+    usage: "/delete",
     run: async(interaction, client) => {
         const row = new MessageActionRow()
         .addComponents(

@@ -15,6 +15,7 @@ module.exports = {
     timeout: 3000,
     ticketOnly: true,
     modOnly: true,
+    usage: "/remove **user:**Fnr#0017",
     category: "ticket",
     run: async(interaction) => {
         const member = interaction.options.getMember('user');

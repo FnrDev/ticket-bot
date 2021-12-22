@@ -1,5 +1,6 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const config = require('../../settings.json');
+const db = require('quick.db');
 
 module.exports = {
     name: "new",
@@ -36,6 +37,11 @@ module.exports = {
             ],
             reason: "Created a new ticket"
         });
+        const data = {
+            channel: ticketChannel.id,
+            owner: interaction.user.id
+        }
+        db.set(ticketChannel.id, data);
         const embed = new MessageEmbed()
         .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
         .setDescription("Support will be with you shortly.\nTo close this ticket click 🔒 button.")

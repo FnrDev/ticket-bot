@@ -7,9 +7,9 @@ module.exports = {
     permission: "ADMINISTRATOR",
     category: "ticket",
     usage: "/setup",
-    run: async(interaction, client) => {
+    run: async(interaction) => {
         const checkTicketCategory = interaction.guild.channels.cache.find(r => r.type === 'GUILD_CATEGORY' && r.name === 'tickets');
-        if (checkTicketCategory) {
+        if (checkTicketCategory && db.get(checkTicketCategory.id)) {
             const embed = new Discord.MessageEmbed()
             .setDescription("**:x: Ticket system is already has been created.**")
             .setColor(settings.errorEmbedColor)
@@ -18,7 +18,7 @@ module.exports = {
                 ephemeral: true
             });
         }
-        await interaction.guild.channels.create("tickets", { type: "GUILD_CATEGORY", reason: "Setup ticket category." });
+        const ticketCategory = await interaction.guild.channels.create("tickets", { type: "GUILD_CATEGORY", reason: "Setup ticket category." });
         const embed = new Discord.MessageEmbed()
         .setDescription(`**👌 Ticket system has been created.**`)
         .setColor(settings.successEmbedColor)

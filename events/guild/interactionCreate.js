@@ -1,5 +1,5 @@
 const Timeout = new Set()
-const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
 const wait = require('util').promisify(setTimeout);
 const settings = require('../../settings.json');
@@ -41,7 +41,7 @@ module.exports = async(client, interaction) => {
 				}
 			}
 			if (command.ticketOnly) {
-				const getTicketCategory = interaction.guild.channels.cache.find(r => r.type === 'GUILD_CATEGORY' && r.name === 'tickets');
+				const getTicketCategory = db.get(interaction.channel.parentId)
 				if (interaction.channel.parentId !== getTicketCategory.id) {
 					return interaction.reply({
 						content: ":x: You can't use this command outside ticket channel.",
@@ -57,7 +57,7 @@ module.exports = async(client, interaction) => {
 					})
 				}
 			}
-			command.run(interaction, client);
+			command.run(interaction, client, db);
 			Timeout.add(`${interaction.user.id}${command.name}`)
 			setTimeout(() => {
 				Timeout.delete(`${interaction.user.id}${command.name}`)

@@ -22,7 +22,8 @@ require('colors');
   client.db = db;
   db.on('connected', () => {
     console.log(`[DataBase] DataBase Connected.`.green);
-  })
+  });
+  db.create("tickets")
 })();
 
 client.login(process.env.TOKEN);

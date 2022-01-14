@@ -24,6 +24,15 @@ require('colors');
     console.log(`[DataBase] DataBase Connected.`.green);
   });
   db.create("tickets")
+  db.create("categorys")
 })();
+
+process.on('unhandledRejection', (err) => {
+  console.error(`Unhandled Promise: ${err}`.red);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error(`Uncaught Exception: ${err}`.red);
+});
 
 client.login(process.env.TOKEN);

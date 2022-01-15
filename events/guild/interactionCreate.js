@@ -94,9 +94,10 @@ module.exports = async(client, interaction) => {
 					if (findCommand.timeout) {
 						embed.addField("Timeout:", humanizeDuration(findCommand.timeout, { round: true }))
 					}
-					interaction.reply({
+					interaction.message.edit({
+						content: null,
 						embeds: [embed],
-						ephemeral: true
+						components: []
 					})
 				}
 			}

@@ -10,6 +10,7 @@ module.exports = {
     run: async(interaction, client) => {
         const getAllData = await client.db.all("tickets");
         const userHasTicket = getAllData.filter(r => r.data.user === interaction.user.id);
+        const filterGuildTickets = getAllData.filter(r => r.data.guild === interaction.guild.id);
         const ticketCatgory = interaction.guild.channels.cache.find(r => r.type === 'GUILD_CATEGORY' && r.name === 'tickets');
         if (!ticketCatgory) {
             await interaction.guild.channels.create('tickets', { type: "GUILD_CATEGORY", reason: "Setup ticket category" })
@@ -47,7 +48,8 @@ module.exports = {
             ticket: ticketChannel.id,
             guild: interaction.guild.id,
             user: interaction.user.id,
-            open: true
+            open: true,
+            number: filterGuildTickets.length + 1
         })
         const embed = new MessageEmbed()
         .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))

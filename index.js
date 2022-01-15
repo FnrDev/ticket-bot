@@ -24,7 +24,6 @@ require('colors');
     console.log(`[DataBase] DataBase Connected.`.green);
   });
   db.create("tickets")
-  db.create("categorys")
 })();
 
 process.on('unhandledRejection', (err) => {

@@ -8,13 +8,19 @@ module.exports = {
     category: "ticket",
     usage: "/new",
     run: async(interaction, client) => {
+        const getAllData = await client.db.all("tickets");
+        const userHasTicket = getAllData.filter(r => r.data.user === interaction.user.id);
         const ticketCatgory = interaction.guild.channels.cache.find(r => r.type === 'GUILD_CATEGORY' && r.name === 'tickets');
         if (!ticketCatgory) {
-            const embed = new MessageEmbed()
-            .setDescription('**:x: You need to setup ticket system before creating a new ticket, use command \`/setup\` to setup ticket system.**')
-            .setColor(config.embedColor)
+            await interaction.guild.channels.create('tickets', { type: "GUILD_CATEGORY", reason: "Setup ticket category" })
             return interaction.reply({
-                embeds: [embed],
+                content: `:x: There was no ticket category, and i created a new one, use this command again.`,
+                ephemeral: true
+            })
+        }
+        if (userHasTicket.length > 0) {
+            return interaction.reply({
+                content: `:x: You already have opened ticket.`,
                 ephemeral: true
             })
         }
@@ -36,24 +42,22 @@ module.exports = {
             ],
             reason: "Created a new ticket"
         });
+        await client.db.set('tickets', ticketChannel.id, {
+            category: ticketCatgory.id,
+            ticket: ticketChannel.id,
+            guild: interaction.guild.id,
+            user: interaction.user.id,
+            open: true
+        })
         const embed = new MessageEmbed()
         .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
-        .setDescription("Support will be with you shortly.\nTo close this ticket click 🔒 button.")
+        .setDescription("Support will be with you shortly.")
         .setColor(config.embedColor)
         .setFooter(`${interaction.guild.name} Support`, interaction.guild.iconURL({ dynamic: true }))
         .setTimestamp()
-        const row = new MessageActionRow()
-        .addComponents(
-            new MessageButton()
-            .setCustomId('close')
-            .setStyle('DANGER')
-            .setLabel('Close Ticket')
-            .setEmoji('🔒')
-        )
         ticketChannel.send({
             content: interaction.user.toString(),
-            embeds: [embed],
-            components: [row]
+            embeds: [embed]
         })
         const successEmbed = new MessageEmbed()
         .setDescription(`**👋 Hey ${interaction.user.username}, You can ask your question in ${ticketChannel}**`)

@@ -44,7 +44,8 @@ module.exports = {
                 .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))
                 await logChannel.send({
                     embeds: [embed]
-                })
+                });
+                await client.db.delete('tickets', interaction.channel.id);
                 return interaction.channel.delete(`By: ${interaction.user.tag}`);
             }
             if (i.customId === 'cancel') {

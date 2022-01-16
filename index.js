@@ -23,7 +23,8 @@ require('colors');
   db.on('connected', () => {
     console.log(`[DataBase] DataBase Connected.`.green);
   });
-  db.create("tickets")
+  db.create("tickets");
+  db.create("config");
 })();
 
 process.on('unhandledRejection', (err) => {

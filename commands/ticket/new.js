@@ -20,7 +20,7 @@ module.exports = {
         const ticketCatgory = interaction.guild.channels.cache.get(config.category);
         if (!ticketCatgory) {
             return interaction.reply({
-                content: `:x: You need to setup config for ticket category\nUse \`/config\` command.`,
+                content: `:x: I can\'t find this category, or category with id **${config.category}** has been deleted`,
                 ephemeral: true
             })
         }

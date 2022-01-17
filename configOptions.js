@@ -36,5 +36,11 @@ module.exports = [
         name: "default_name",
         description: "The default name for ticket name",
         type: 3
+    },
+    {
+        name: "log_channel",
+        description: "The log channel to send create / delete ticket",
+        type: 7,
+        channel_types: [0]
     }
 ]

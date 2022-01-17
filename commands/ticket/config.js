@@ -13,6 +13,7 @@ module.exports = {
         const embedcontent = interaction.options.getString('embed_content') || null;
         const limit = interaction.options.getInteger('limit_per_user') || 1;
         const defaultName = interaction.options.getString('default_name') || '{user}-ticket';
+        const logChannel = interaction.options.getChannel('log_channel');
         const resolveEmbedColor = Util.resolveColor(successColor);
         const resolveErrorColor = Util.resolveColor(errorColor);
         await client.db.set('config', interaction.guild.id, {
@@ -22,7 +23,8 @@ module.exports = {
             errorColor: resolveErrorColor,
             content: embedcontent,
             limit_per_user: limit,
-            name: defaultName
+            name: defaultName,
+            log_channel: logChannel ? logChannel.id : null
         });
         const embed = new MessageEmbed()
         .setAuthor(`${interaction.guild.name} Config`, interaction.guild.iconURL())
@@ -51,6 +53,10 @@ module.exports = {
             {
                 name: "Default Ticket Name :",
                 value: defaultName.replace('{user}', interaction.user.username)
+            },
+            {
+                name: "Log Channel :",
+                value: logChannel ? logChannel.toString() : "No Log Channel"
             }
         )
         interaction.reply({

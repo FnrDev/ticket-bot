@@ -10,9 +10,9 @@ module.exports = {
         const role = interaction.options.getRole('role');
         const successColor = interaction.options.getString('embed_color') || null;
         const errorColor = interaction.options.getString('error_color') || null;
-        const embedcontent = interaction.options.getString('embed_content') || null;
+        const embedcontent = interaction.options.getString('embed_content') || 'Support will be with you shortly.';
         const limit = interaction.options.getInteger('limit_per_user') || 1;
-        const defaultName = interaction.options.getString('default_name') || '{user}-ticket';
+        const defaultName = interaction.options.getString('default_name') || null;
         const logChannel = interaction.options.getChannel('log_channel');
         const resolveEmbedColor = Util.resolveColor(successColor);
         const resolveErrorColor = Util.resolveColor(errorColor);
@@ -52,7 +52,7 @@ module.exports = {
             },
             {
                 name: "Default Ticket Name :",
-                value: defaultName.replace('{user}', interaction.user.username)
+                value: defaultName || 'No Default Name'
             },
             {
                 name: "Log Channel :",

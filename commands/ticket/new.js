@@ -1,32 +1,38 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const config = require('../../settings.json');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: "new",
     description: "Create a new ticket",
-    timeout: 10000,
+    timeout: 3000,
     category: "ticket",
     usage: "/new",
     run: async(interaction, client) => {
         const getAllData = await client.db.all("tickets");
+        const config = await client.db.get('config', interaction.guild.id);
+        if (!config) {
+            return interaction.reply({
+                content: ":x: There are no config for this server, please use \`/config\` commnad before creating new ticket",
+                ephemeral: true
+            })
+        }
         const userHasTicket = getAllData.filter(r => r.data.user === interaction.user.id);
         const filterGuildTickets = getAllData.filter(r => r.data.guild === interaction.guild.id);
-        const ticketCatgory = interaction.guild.channels.cache.find(r => r.type === 'GUILD_CATEGORY' && r.name === 'tickets');
+        const ticketCatgory = interaction.guild.channels.cache.get(config.category);
         if (!ticketCatgory) {
-            await interaction.guild.channels.create('tickets', { type: "GUILD_CATEGORY", reason: "Setup ticket category" })
             return interaction.reply({
-                content: `:x: There was no ticket category, and i created a new one, use this command again.`,
+                content: `:x: You need to setup config for ticket category\nUse \`/config\` command.`,
                 ephemeral: true
             })
         }
-        if (userHasTicket.length > 0) {
+        if (userHasTicket.length > config.limit_per_user) {
             return interaction.reply({
-                content: `:x: You already have opened ticket.`,
+                content: `:x: You execute ticket limit per user for this server`,
                 ephemeral: true
             })
         }
-        const ticketChannel = await interaction.guild.channels.create(`${interaction.user.username}-ticket`, {
-            parent: ticketCatgory.id,
+        const ticketName = config.name || `${interaction.user.username}-ticket`
+        const ticketChannel = await interaction.guild.channels.create(ticketName, {
+            parent: config.category,
             permissionOverwrites: [
                 {
                     allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
@@ -34,7 +40,7 @@ module.exports = {
                 },
                 {
                     allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "MANAGE_MESSAGES", "MANAGE_CHANNELS"],
-                    id: config.modRole
+                    id: config.role
                 },
                 {
                     deny: ["VIEW_CHANNEL", "SEND_MESSAGES"],
@@ -53,8 +59,8 @@ module.exports = {
         })
         const embed = new MessageEmbed()
         .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
-        .setDescription("Support will be with you shortly.")
-        .setColor(config.embedColor)
+        .setDescription(config.content)
+        .setColor(config.successColor)
         .setFooter(`${interaction.guild.name} Support`, interaction.guild.iconURL({ dynamic: true }))
         .setTimestamp()
         ticketChannel.send({
@@ -63,11 +69,11 @@ module.exports = {
         })
         const successEmbed = new MessageEmbed()
         .setDescription(`**👋 Hey ${interaction.user.username}, You can ask your question in ${ticketChannel}**`)
-        .setColor(config.successEmbedColor)
+        .setColor(config.successColor)
         interaction.reply({
             embeds: [successEmbed]
         });
-        const logChannel = client.channels.cache.get(config.logChannel);
+        const logChannel = client.channels.cache.get(config.log_channel);
         if (!logChannel) return;
         const logEmbed = new MessageEmbed()
         .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
@@ -75,6 +81,7 @@ module.exports = {
         .setDescription(`${interaction.user} Created a new ticket ${ticketChannel}`)
         .addField("Ticket ID:", ticketChannel.id, true)
         .addField("Ticket Created At:", `<t:${Math.floor(ticketChannel.createdTimestamp / 1000)}:R>`, true)
+        .addField("Ticket Name:", ticketChannel.name, true)
         .setColor(config.embedColor)
         .setTimestamp()
         logChannel.send({

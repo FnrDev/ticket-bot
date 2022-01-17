@@ -10,6 +10,7 @@ module.exports = async(client, interaction) => {
 		if (!interaction.guild) return;
 		const command = client.commands.get(interaction.commandName)
 		try {
+			const config = await client.db.get('config', interaction.guild.id);
 			if (command.timeout) {
 				if (Timeout.has(`${interaction.user.id}${command.name}`)) {
 					const embed = new MessageEmbed()
@@ -51,7 +52,7 @@ module.exports = async(client, interaction) => {
 				}
 			}
 			if (command.modOnly) {
-				if (!interaction.member.roles.cache.has(settings.modRole)) {
+				if (!interaction.member.roles.cache.has(config.role)) {
 					return interaction.reply({
 						content: ":x: Only members with mod role can use this commnad.",
 						ephemeral: true

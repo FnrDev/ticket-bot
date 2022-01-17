@@ -31,5 +31,10 @@ module.exports = [
         name: "limit_per_user",
         description: "The Limit per user for creating tickets",
         type: 4
+    },
+    {
+        name: "default_name",
+        description: "The default name for ticket name",
+        type: 3
     }
 ]

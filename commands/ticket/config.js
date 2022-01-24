@@ -17,8 +17,8 @@ module.exports = {
         const resolveEmbedColor = Util.resolveColor(successColor);
         const resolveErrorColor = Util.resolveColor(errorColor);
         await client.db.set('config', interaction.guild.id, {
-            category: category.id,
-            role: role.id,
+            category: category ? category.id : null,
+            role: role ? role.id : null,
             successColor: resolveEmbedColor,
             errorColor: resolveErrorColor,
             content: embedcontent,
@@ -32,11 +32,11 @@ module.exports = {
         .addFields(
             {
                 name: "Role :",
-                value: role.name
+                value: role ? role.name : 'No role has been setup'
             },
             {
                 name: "Category :",
-                value: category.toString()
+                value: category ? category.toString() : 'No Category'
             },
             {
                 name: "Embed Color :",

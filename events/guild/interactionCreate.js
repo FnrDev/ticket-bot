@@ -1,8 +1,6 @@
 const Timeout = new Set()
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
-const wait = require('util').promisify(setTimeout);
-const settings = require('../../settings.json');
 
 module.exports = async(client, interaction) => {
     if (interaction.isCommand() || interaction.isContextMenu()) {
@@ -16,7 +14,7 @@ module.exports = async(client, interaction) => {
 					const embed = new MessageEmbed()
 					.setTitle('You are in timeout!')
 					.setDescription(`You need to wait **${humanizeDuration(command.timeout, { round: true })}** to use command again`)
-					.setColor(settings.errorEmbedColor)
+					.setColor(config.errorColor)
 					return interaction.reply({ embeds: [embed], ephemeral: true })
 				}
 			}
@@ -25,7 +23,7 @@ module.exports = async(client, interaction) => {
 					const embed = new MessageEmbed()
 					.setTitle('Missing Permission')
 					.setDescription(`:x: You need \`${command.permission}\` permission to use this command`)
-					.setColor(settings.errorEmbedColor)
+					.setColor(config.errorColor)
 					.setFooter(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
 					.setTimestamp()
 					return interaction.reply({ embeds: [embed], ephemeral: true })

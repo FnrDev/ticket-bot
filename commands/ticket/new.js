@@ -30,7 +30,7 @@ module.exports = {
                 ephemeral: true
             })
         }
-        const ticketName = config.name || `${interaction.user.username}-ticket`
+        const ticketName = config.name || `ticket-${getAllData.filter(r => r.data.guild === interaction.guild.id).length}`
         const ticketChannel = await interaction.guild.channels.create(ticketName, {
             parent: config.category,
             permissionOverwrites: [

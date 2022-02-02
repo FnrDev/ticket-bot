@@ -1,0 +1,9 @@
+chore:
+  - 'README.md'
+  - '.gitignore'
+  - 'package.json'
+  - 'LICENSE'
+
+ci:
+  - '.github/*'
+  - '.github/workflows/*'

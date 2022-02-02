@@ -50,9 +50,9 @@ module.exports = async(client, interaction) => {
 				}
 			}
 			if (command.modOnly) {
-				if (!interaction.member.roles.cache.has(config.role)) {
+				if (!interaction.member.roles.cache.has(config.staff || config.managers)) {
 					return interaction.reply({
-						content: ":x: Only members with mod role can use this commnad.",
+						content: ":x: Only ticket staff/managers can use this command.",
 						ephemeral: true
 					})
 				}

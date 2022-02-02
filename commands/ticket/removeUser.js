@@ -29,7 +29,7 @@ module.exports = {
             await interaction.channel.permissionOverwrites.delete(member, `By: ${interaction.user.tag}, Removed user from ticket`);
             const embed = new MessageEmbed()
             .setDescription(`**👌 Removed ${member} from the ticket.**`)
-            .setColor(config.successColor)
+            .setColor(config.success)
             interaction.reply({
                 embeds: [embed]
             })

@@ -27,12 +27,12 @@ require('colors');
   db.create("config");
 })();
 
-process.on('unhandledRejection', (err) => {
-  console.error(`Unhandled Rejection: ${err}`.red);
-});
+// process.on('unhandledRejection', (err) => {
+//   console.error(`Unhandled Rejection: ${err}`.red);
+// });
 
-process.on('uncaughtException', (err) => {
-  console.error(`Uncaught Exception: ${err}`.red);
-});
+// process.on('uncaughtException', (err) => {
+//   console.error(`Uncaught Exception: ${err}`.red);
+// });
 
 client.login(process.env.TOKEN);

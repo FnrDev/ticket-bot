@@ -9,6 +9,11 @@ module.exports = [
                 description: "The message to sent in ticket",
                 type: 3,
                 required: true
+            },
+            {
+                name: "content",
+                description: "The content will be appeared above embed message",
+                type: 3
             }
         ]
     },
@@ -36,12 +41,6 @@ module.exports = [
                 description: "The success embed hex color",
                 type: 3,
                 required: true
-            },
-            {
-                name: "error",
-                description: "The error embed hex color",
-                type: 3,
-                required: true
             }
         ]
     },
@@ -60,6 +59,46 @@ module.exports = [
                 name: "managers",
                 description: "The managers role to (view ticket / send messages / manage channels / manage messages)",
                 type: 8,
+                required: true
+            }
+        ]
+    },
+    {
+        name: "limit",
+        description: "Configuration the limit for each user to create ticket",
+        type: 1,
+        options: [
+            {
+                name: "limit",
+                description: "The limit for each user to create ticket",
+                type: 4,
+                required: true
+            }
+        ]
+    },
+    {
+        name: "name",
+        description: "Configuration the default ticket name",
+        type: 1,
+        options: [
+            {
+                name: "name",
+                description: "The default ticket name. use variables. {username} - username for author",
+                type: 3,
+                required: true
+            }
+        ]
+    },
+    {
+        name: "log", 
+        description: "Configuration the log channel for (creating / delete) tickets",
+        type: 1,
+        options: [
+            {
+                name: "channel",
+                description: "Select log channel",
+                type: 7,
+                channel_types: [0],
                 required: true
             }
         ]

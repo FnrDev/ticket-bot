@@ -24,13 +24,13 @@ module.exports = {
                 ephemeral: true
             })
         }
-        if (userHasTicket.length > config.limit_per_user) {
+        if (userHasTicket.length + 1 > config.limit) {
             return interaction.reply({
-                content: `:x: You execute ticket limit per user for this server`,
+                content: `:x: You execute ticket limit per user in this server`,
                 ephemeral: true
             })
         }
-        const ticketName = config.name || `ticket-${getAllData.filter(r => r.data.guild === interaction.guild.id).length}`
+        const ticketName = config.name?.replace('{username}', interaction.user.username) || `ticket-${getAllData.filter(r => r.data.guild === interaction.guild.id).length + 1}`
         const ticketChannel = await interaction.guild.channels.create(ticketName, {
             parent: config.category,
             permissionOverwrites: [
@@ -40,8 +40,12 @@ module.exports = {
                 },
                 {
                     allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "MANAGE_MESSAGES", "MANAGE_CHANNELS"],
-                    id: config.role
+                    id: config.managers
                 },
+                {
+                    allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
+                    id: config.staff
+                }, 
                 {
                     deny: ["VIEW_CHANNEL", "SEND_MESSAGES"],
                     id: interaction.guild.id
@@ -59,30 +63,30 @@ module.exports = {
         })
         const embed = new MessageEmbed()
         .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
-        .setDescription(config.content)
-        .setColor(config.successColor)
+        .setDescription(config.message)
+        .setColor(config.success)
         .setFooter(`${interaction.guild.name} Support`, interaction.guild.iconURL({ dynamic: true }))
         .setTimestamp()
         ticketChannel.send({
-            content: interaction.user.toString(),
+            content: config.content,
             embeds: [embed]
         })
         const successEmbed = new MessageEmbed()
         .setDescription(`**👋 Hey ${interaction.user.username}, You can ask your question in ${ticketChannel}**`)
-        .setColor(config.successColor)
+        .setColor(config.success)
         interaction.reply({
             embeds: [successEmbed]
         });
-        const logChannel = client.channels.cache.get(config.log_channel);
+        const logChannel = interaction.guild.channels.cache.get(config.log)
         if (!logChannel) return;
         const logEmbed = new MessageEmbed()
         .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
         .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))
-        .setDescription(`${interaction.user} Created a new ticket ${ticketChannel}`)
+        .setDescription(`${interaction.user} Created a new ticket ${ticketChannel} (#${ticketChannel.name})`)
         .addField("Ticket ID:", ticketChannel.id, true)
         .addField("Ticket Created At:", `<t:${Math.floor(ticketChannel.createdTimestamp / 1000)}:R>`, true)
         .addField("Ticket Name:", ticketChannel.name, true)
-        .setColor(config.embedColor)
+        .setColor(config.success)
         .setTimestamp()
         logChannel.send({
             embeds: [logEmbed]

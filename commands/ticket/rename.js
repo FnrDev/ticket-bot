@@ -22,7 +22,7 @@ module.exports = {
             await interaction.channel.edit({ name: name });
             const embed = new Discord.MessageEmbed()
             .setDescription(`👌 Renamed ticket channel to **${name}**`)
-            .setColor(config.successColor);
+            .setColor(config.success);
             interaction.reply({
                 embeds: [embed]
             });

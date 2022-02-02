@@ -20,7 +20,7 @@ module.exports = {
         const config = await client.db.get('config', interaction.guild.id)
         const embed = new Discord.MessageEmbed()
         .setDescription(`**🔒 Ticket has been closed**`)
-        .setColor(config.successColor)
+        .setColor(config.success)
         interaction.reply({
             embeds: [embed]
         })

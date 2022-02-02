@@ -32,7 +32,7 @@ module.exports = {
             });
             const embed = new MessageEmbed()
             .setDescription(`**👌 Added ${member} to the ticket.**`)
-            .setColor(config.successColor)
+            .setColor(config.success)
             interaction.reply({
                 embeds: [embed]
             })

@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const settings = require('../../settings.json');
 
 module.exports = {
     name: "add",
@@ -26,13 +25,14 @@ module.exports = {
             });
         }
         try {
+            const config = await client.db.get('config', interaction.guild.id)
             await interaction.channel.permissionOverwrites.edit(member, {
                 VIEW_CHANNEL: true,
                 SEND_MESSAGES: true
             });
             const embed = new MessageEmbed()
             .setDescription(`**👌 Added ${member} to the ticket.**`)
-            .setColor(settings.embedColor)
+            .setColor(config.success)
             interaction.reply({
                 embeds: [embed]
             })

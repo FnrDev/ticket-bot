@@ -1,5 +1,4 @@
 const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
-const settings = require('../../settings.json');
 
 module.exports = {
     name: "delete",
@@ -31,7 +30,8 @@ module.exports = {
         const collector = interaction.channel.createMessageComponentCollector({ filter: filter, time: 20000 });
         collector.on('collect', async i => {
             if (i.customId === 'delete_ticket') {
-                const logChannel = client.channels.cache.get(settings.logChannel);
+                const config = await client.db.get('config', interaction.guild.id);
+                const logChannel = interaction.guild.channels.cache.get(config.log);
                 if (!logChannel) return;
                 const embed = new MessageEmbed()
                 .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
@@ -39,7 +39,7 @@ module.exports = {
                 .addField("Ticket ID:", interaction.channel.id, true)
                 .addField("Ticket Created At:", `<t:${Math.floor(interaction.channel.createdTimestamp / 1000)}:R>`, true)
                 .addField("Ticket Deleted At:", `<t:${Math.floor(Date.now() / 1000)}:R>`, true)
-                .setColor(settings.embedColor)
+                .setColor(config.success)
                 .setTimestamp()
                 .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))
                 await logChannel.send({

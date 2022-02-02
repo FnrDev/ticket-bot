@@ -1,8 +1,6 @@
 const Timeout = new Set()
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const humanizeDuration = require("humanize-duration");
-const wait = require('util').promisify(setTimeout);
-const settings = require('../../settings.json');
 
 module.exports = async(client, interaction) => {
     if (interaction.isCommand() || interaction.isContextMenu()) {
@@ -10,12 +8,13 @@ module.exports = async(client, interaction) => {
 		if (!interaction.guild) return;
 		const command = client.commands.get(interaction.commandName)
 		try {
+			const config = await client.db.get('config', interaction.guild.id);
 			if (command.timeout) {
 				if (Timeout.has(`${interaction.user.id}${command.name}`)) {
 					const embed = new MessageEmbed()
 					.setTitle('You are in timeout!')
 					.setDescription(`You need to wait **${humanizeDuration(command.timeout, { round: true })}** to use command again`)
-					.setColor(settings.errorEmbedColor)
+					.setColor('#ff0000')
 					return interaction.reply({ embeds: [embed], ephemeral: true })
 				}
 			}
@@ -24,7 +23,7 @@ module.exports = async(client, interaction) => {
 					const embed = new MessageEmbed()
 					.setTitle('Missing Permission')
 					.setDescription(`:x: You need \`${command.permission}\` permission to use this command`)
-					.setColor(settings.errorEmbedColor)
+					.setColor('#ff0000')
 					.setFooter(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
 					.setTimestamp()
 					return interaction.reply({ embeds: [embed], ephemeral: true })
@@ -51,9 +50,9 @@ module.exports = async(client, interaction) => {
 				}
 			}
 			if (command.modOnly) {
-				if (!interaction.member.roles.cache.has(settings.modRole)) {
+				if (!interaction.member.roles.cache.has(config.staff || config.managers)) {
 					return interaction.reply({
-						content: ":x: Only members with mod role can use this commnad.",
+						content: ":x: Only ticket staff/managers can use this command.",
 						ephemeral: true
 					})
 				}
@@ -94,9 +93,10 @@ module.exports = async(client, interaction) => {
 					if (findCommand.timeout) {
 						embed.addField("Timeout:", humanizeDuration(findCommand.timeout, { round: true }))
 					}
-					interaction.reply({
+					interaction.message.edit({
+						content: null,
 						embeds: [embed],
-						ephemeral: true
+						components: []
 					})
 				}
 			}

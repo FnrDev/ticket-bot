@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const config = require('../../settings.json')
 
 module.exports = {
     name: "close",
@@ -18,9 +17,10 @@ module.exports = {
         const ticketData = await client.db.get('tickets', interaction.channel.id);
         ticketData['open'] = false;
         await client.db.set('tickets', interaction.channel.id, ticketData);
+        const config = await client.db.get('config', interaction.guild.id)
         const embed = new Discord.MessageEmbed()
         .setDescription(`**🔒 Ticket has been closed**`)
-        .setColor(config.embedColor)
+        .setColor(config.success)
         interaction.reply({
             embeds: [embed]
         })

@@ -20,7 +20,7 @@ module.exports = {
             SEND_MESSAGES: true
         });
         interaction.reply({
-            content: `✅ Successfully reopened this ticket.`
+            content: `✅ Successfully re opened this ticket.`
         })
     }
 }

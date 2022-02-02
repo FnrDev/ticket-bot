@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const settings = require('../../settings.json');
 
 module.exports = {
     name: "rename",
@@ -16,13 +15,14 @@ module.exports = {
     ticketOnly: true,
     category: "ticket",
     usage: "/rename **new_name:**Premium",
-    run: async(interaction) => {
+    run: async(interaction, client) => {
         const name = interaction.options.getString('new_name');
         try {
+            const config = await client.db.get('config', interaction.guild.id);
             await interaction.channel.edit({ name: name });
             const embed = new Discord.MessageEmbed()
             .setDescription(`👌 Renamed ticket channel to **${name}**`)
-            .setColor(settings.embedColor);
+            .setColor(config.success);
             interaction.reply({
                 embeds: [embed]
             });

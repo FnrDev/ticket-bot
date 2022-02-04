@@ -1,4 +1,4 @@
-const { Util } = require('discord.js');
+const { Util, MessageEmbed } = require('discord.js');
 const configOptions = require('../../configOptions');
 
 module.exports = {
@@ -79,6 +79,50 @@ module.exports = {
             await client.db.set('config', interaction.guild.id, data);
             return interaction.reply({
                 content: "Config has been set!"
+            })
+        }
+        if (interaction.options.getSubcommand() === 'show') {
+            const configData = await client.db.get('config', interaction.guild.id);
+            if (!configData) {
+                return interaction.reply({
+                    content: ":x: No config has been set for this server.",
+                    ephemeral: true
+                })
+            }
+            const embed = new MessageEmbed()
+            .setAuthor(interaction.guild.name, interaction.guild.iconURL())
+            .setColor(configData.success)
+            .setFooter(interaction.user.tag, interaction.user.displayAvatarURL())
+            .setTimestamp()
+            if (configData.staff) {
+                embed.addField('Staff Role:', `<@&${configData.staff}>`, true)
+            }
+            if (configData.managers) {
+                embed.addField('Managers Role:', `<@&${configData.managers}>`, true)
+            }
+            if (configData.category) {
+                embed.addField('Ticket Category:', `<#${configData.category}>`, true)
+            }
+            if (configData.message) {
+                embed.addField('Ticket Message:', configData.message, true)
+            }
+            if (configData.success) {
+                embed.addField('Success Color:', `${configData.success}`, true)
+            }
+            if (configData.limit) {
+                embed.addField('Ticket Limit Per User:', `${configData.limit}`, true)
+            }
+            if (configData.log) {
+                embed.addField('Log Channel:', `<#${configData.log}>`, true)
+            }
+            if (configData.name) {
+                embed.addField('Default Ticket Name:', configData.name, true)
+            }
+            if (configData.content) {
+                embed.addField('Ticket Content:', configData.content, true)
+            }
+            interaction.reply({
+                embeds: [embed]
             })
         }
     }

@@ -19,6 +19,7 @@ module.exports = {
             type: 5
         }
     ],
+    modOnly: true,
     run: async(interaction, client) => {
         const user = interaction.options.getUser('filter_by_user');
         const onlyOpened = interaction.options.getBoolean('filter_opened_tickets');

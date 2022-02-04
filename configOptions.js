@@ -102,5 +102,10 @@ module.exports = [
                 required: true
             }
         ]
+    },
+    {
+        name: "show",
+        description: "Show your configurations in this server",
+        type: 1
     }
 ]

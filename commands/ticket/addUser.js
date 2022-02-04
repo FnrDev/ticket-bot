@@ -16,7 +16,7 @@ module.exports = {
     timeout: 3000,
     modOnly: true,
     ticketOnly: true,
-    run: async(interaction) => {
+    run: async(interaction, client) => {
         const member = interaction.options.getMember('user');
         if (interaction.channel.permissionsFor(member).has('VIEW_CHANNEL')) {
             return interaction.reply({
@@ -38,7 +38,7 @@ module.exports = {
             })
         } catch (e) {
             return interaction.reply({
-                content: e,
+                content: e.toString(),
                 ephemeral: true
             })
         }

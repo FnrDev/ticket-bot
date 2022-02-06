@@ -2,7 +2,7 @@ module.exports = async(client, member) => {
     const fetchAllTickets = await client.db.all("tickets");
     const filterUserTickets = fetchAllTickets.filter(r => r.data.user === member.id);
     if (!filterUserTickets.length) return;
-    filterUserTickets.forEach(ticketObj => {
+    filterUserTickets.forEach(async ticketObj => {
         const ticket = member.guild.channels.cache.get(ticketObj.data.ticket);
         if (!ticket) return;
         await ticket.permissionOverwrites.edit(member, {

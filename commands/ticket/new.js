@@ -30,7 +30,8 @@ module.exports = {
                 ephemeral: true
             })
         }
-        const ticketName = config.name?.replace('{username}', interaction.user.username) || `ticket-${getAllData.filter(r => r.data.guild === interaction.guild.id).length + 1}`
+        const ticketNumber = getAllData.filter(r => r.data.guild === interaction.guild.id).length + 1;
+        const ticketName = config.name?.replace('{username}', interaction.user.username) || `ticket-${ticketNumber}`
         const ticketChannel = await interaction.guild.channels.create(ticketName, {
             parent: config.category,
             permissionOverwrites: [
@@ -68,7 +69,10 @@ module.exports = {
         .setFooter(`${interaction.guild.name} Support`, interaction.guild.iconURL({ dynamic: true }))
         .setTimestamp()
         ticketChannel.send({
-            content: config.content,
+            content: config.content?.replaceAll('{username}', interaction.user.username)
+            .replaceAll('{user}', interaction.user.toString())
+            .replaceAll('{ticket}', interaction.channel.toString())
+            .replaceAll('{ticketNumber}', ticketNumber),
             embeds: [embed]
         })
         const successEmbed = new MessageEmbed()

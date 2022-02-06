@@ -29,7 +29,7 @@ PORT=3306
 OWNERS=["596227913209217024"]
 ```
 
-### Features:
+### 🥳 Features:
 - Send message to ticket after user left the server.
 - Send message and add user to the ticket after user rejoined the server.
 - Ability to set staff, managers role for ticket channel and changed the embed text, and alot more ...

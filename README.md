@@ -37,4 +37,4 @@ OWNERS=["596227913209217024"]
 - Ability to close / open ticket with `/close`, `/open` commands.
 - Ability to show all ticket list, and filtered them by `user tickets`, `opened tickets`, `closed tickets`.
 - Ability to rename the ticket with `/rename` command.
-- Ability to use variables in ticket content.
+- Ability to use variables in ticket content, use `/variables` to show all available variables.

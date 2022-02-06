@@ -6,6 +6,9 @@ module.exports = {
     description: "Configuration ticket system.",
     options: configOptions,
     run: async(interaction, client) => {
+        const replyMessage = {
+            content: "Config has been set!"
+        }
         if (interaction.options.getSubcommand() === 'message') {
             const message = interaction.options.getString('message');
             const content = interaction.options.getString('content') || null;
@@ -14,9 +17,7 @@ module.exports = {
             data.message = message;
             data.content = content;
             await client.db.set('config', interaction.guild.id, data);
-            return interaction.reply({
-                content: "Config has been set!"
-            })
+            return interaction.reply(replyMessage)
         }
         if (interaction.options.getSubcommand() === 'category') {
             const channel = interaction.options.getChannel('category');
@@ -24,9 +25,7 @@ module.exports = {
             if (!data) data = {};
             data.category = channel.id;
             await client.db.set('config', interaction.guild.id, data);
-            return interaction.reply({
-                content: "Config has been set!"
-            })
+            return interaction.reply(replyMessage)
         }
         if (interaction.options.getSubcommand() === 'color') {
             const success = interaction.options.getString('success');
@@ -35,9 +34,7 @@ module.exports = {
             if (!data) data = {};
             data.success = resovleSuccess;
             await client.db.set('config', interaction.guild.id, data);
-            return interaction.reply({
-                content: "Config has been set!"
-            }) 
+            return interaction.reply(replyMessage)
         }
         if (interaction.options.getSubcommand() === 'role') {
             const staffRole = interaction.options.getRole('staff');
@@ -47,9 +44,7 @@ module.exports = {
             data.staff = staffRole.id;
             data.managers = managersRole.id;
             await client.db.set('config', interaction.guild.id, data);
-            return interaction.reply({
-                content: "Config has been set!"
-            })
+            return interaction.reply(replyMessage)
         }
         if (interaction.options.getSubcommand() === 'limit') {
             const limit = interaction.options.getInteger('limit');
@@ -57,9 +52,7 @@ module.exports = {
             if (!data) data = {};
             data.limit = limit;
             await client.db.set('config', interaction.guild.id, data);
-            return interaction.reply({
-                content: "Config has been set!"
-            })
+            return interaction.reply(replyMessage)
         }
         if (interaction.options.getSubcommand() === 'name') {
             const ticketName = interaction.options.getString('name');
@@ -67,9 +60,7 @@ module.exports = {
             if (!data) data = {};
             data.name = ticketName;
             await client.db.set('config', interaction.guild.id, data);
-            return interaction.reply({
-                content: "Config has been set!"
-            })
+            return interaction.reply(replyMessage)
         }
         if (interaction.options.getSubcommand() === 'log') {
             const logChannel = interaction.options.getChannel('channel');
@@ -77,9 +68,7 @@ module.exports = {
             if (!data) data = {};
             data.log = logChannel.id;
             await client.db.set('config', interaction.guild.id, data);
-            return interaction.reply({
-                content: "Config has been set!"
-            })
+            return interaction.reply(replyMessage)
         }
         if (interaction.options.getSubcommand() === 'show') {
             const configData = await client.db.get('config', interaction.guild.id);
@@ -90,9 +79,9 @@ module.exports = {
                 })
             }
             const embed = new MessageEmbed()
-            .setAuthor(interaction.guild.name, interaction.guild.iconURL())
+            .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
             .setColor(configData.success)
-            .setFooter(interaction.user.tag, interaction.user.displayAvatarURL())
+            .setFooter({ text: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
             .setTimestamp()
             if (configData.staff) {
                 embed.addField('Staff Role:', `<@&${configData.staff}>`, true)

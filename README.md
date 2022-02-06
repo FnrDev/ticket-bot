@@ -1,7 +1,7 @@
 # 📃 Ticket Bot
 
 
-## ticket discord bot [Features](#features).
+## ticket discord bot [Features](#-features).
 
 ---
 ### Note: Node.js 16.6.0 or newer is required.

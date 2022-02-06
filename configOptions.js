@@ -12,7 +12,7 @@ module.exports = [
             },
             {
                 name: "content",
-                description: "The content will be appeared above embed message",
+                description: "content will be appeared above embed message, use /variables command to see all available variables.",
                 type: 3
             }
         ]
@@ -83,7 +83,7 @@ module.exports = [
         options: [
             {
                 name: "name",
-                description: "The default ticket name. use variables. {username} - username for author",
+                description: "The default ticket name. use variable. {username} to show username of the user",
                 type: 3,
                 required: true
             }

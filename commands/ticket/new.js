@@ -63,10 +63,10 @@ module.exports = {
             number: filterGuildTickets.length + 1
         })
         const embed = new MessageEmbed()
-        .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
+        .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
         .setDescription(config.message)
         .setColor(config.success)
-        .setFooter(`${interaction.guild.name} Support`, interaction.guild.iconURL({ dynamic: true }))
+        .setFooter({ text: `${interaction.guild.name} Support`, iconURL: interaction.guild.iconURL({ dynamic: true }) })
         .setTimestamp()
         ticketChannel.send({
             content: config.content?.replaceAll('{username}', interaction.user.username)
@@ -84,7 +84,7 @@ module.exports = {
         const logChannel = interaction.guild.channels.cache.get(config.log)
         if (!logChannel) return;
         const logEmbed = new MessageEmbed()
-        .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
+        .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
         .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))
         .setDescription(`${interaction.user} Created a new ticket ${ticketChannel} (#${ticketChannel.name})`)
         .addField("Ticket ID:", ticketChannel.id, true)

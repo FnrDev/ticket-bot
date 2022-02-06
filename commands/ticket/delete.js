@@ -34,7 +34,7 @@ module.exports = {
                 const logChannel = interaction.guild.channels.cache.get(config.log);
                 if (!logChannel) return;
                 const embed = new MessageEmbed()
-                .setAuthor(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
+                .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`${interaction.user} deleted a **#${interaction.channel.name}** ticket.`)
                 .addField("Ticket ID:", interaction.channel.id, true)
                 .addField("Ticket Created At:", `<t:${Math.floor(interaction.channel.createdTimestamp / 1000)}:R>`, true)

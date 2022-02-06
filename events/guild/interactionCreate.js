@@ -24,7 +24,7 @@ module.exports = async(client, interaction) => {
 					.setTitle('Missing Permission')
 					.setDescription(`:x: You need \`${command.permission}\` permission to use this command`)
 					.setColor('#ff0000')
-					.setFooter(interaction.user.tag, interaction.user.displayAvatarURL({ dynamic: true }))
+					.setFooter({ text: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
 					.setTimestamp()
 					return interaction.reply({ embeds: [embed], ephemeral: true })
 				}
@@ -80,7 +80,7 @@ module.exports = async(client, interaction) => {
 				if (selectedValues.includes(findCommand.name)) {
 					const embed = new MessageEmbed()
 					.setColor(interaction.guild.me.displayHexColor)
-					.setFooter(`Requested by ${interaction.user.tag}`, interaction.user.displayAvatarURL({ dynamic: true }))
+					.setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
 					if (findCommand.name) {
 						embed.setTitle(`Command: ${findCommand.name}`)
 					}

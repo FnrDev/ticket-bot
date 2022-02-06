@@ -21,7 +21,7 @@ module.exports = {
         .setTitle('__Bot Stats__')
         .setColor('RANDOM')
         .setThumbnail(client.user.displayAvatarURL())
-        .setFooter(`© ${client.user.username} - Coded By Fnr#0017`)
+        .setFooter({ text: `© ${client.user.username} - Coded By Fnr#0017` })
         .addFields(
             {
                 name: "<a:IconBot:855532513770340424> Total Guilds: ",

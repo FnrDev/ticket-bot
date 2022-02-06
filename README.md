@@ -35,6 +35,6 @@ OWNERS=["596227913209217024"]
 - Ability to set staff, managers role for ticket channel and changed the embed text, and alot more ...
 - Ability to add / remove user to the ticket with `/add`, `/remove` commands.
 - Ability to close / open ticket with `/close`, `/open` commands.
-- Ability to show all ticket list, and filtered them by `user tickets`, `opened tickets`, `closed tickets` tickets.
+- Ability to show all ticket list, and filtered them by `user tickets`, `opened tickets`, `closed tickets`.
 - Ability to rename the ticket with `/rename` command.
 - Ability to use variables in ticket content.

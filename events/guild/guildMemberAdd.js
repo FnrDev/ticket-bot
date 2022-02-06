@@ -5,7 +5,7 @@ module.exports = async(client, member) => {
     filterUserTickets.forEach(ticketObj => {
         const ticket = member.guild.channels.cache.get(ticketObj.data.ticket);
         if (!ticket) return;
-        ticket.permissionOverwrites.edit(member, {
+        await ticket.permissionOverwrites.edit(member, {
             VIEW_CHANNEL: true,
             SEND_MESSAGES: true
         })

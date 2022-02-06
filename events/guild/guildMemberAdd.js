@@ -10,7 +10,7 @@ module.exports = async(client, member) => {
             SEND_MESSAGES: true
         })
         ticket.send({
-            content: `**${member.user.tag}** has left the server and re joined, and i automatically add member to ticket.` 
+            content: `${member} **(${member.user.tag})** has left the server and rejoined, and I automatically add a member to the ticket.` 
         })
     })
 }

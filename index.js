@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES'] });
+const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS'] });
 const mysql = require('mysql-database');
 const database = new mysql();
 client.commands = new Discord.Collection();
@@ -27,12 +27,12 @@ require('colors');
   db.create("config");
 })();
 
-process.on('unhandledRejection', (err) => {
-  console.error(`Unhandled Rejection: ${err}`.red);
-});
+// process.on('unhandledRejection', (err) => {
+//   console.error(`Unhandled Rejection: ${err}`.red);
+// });
 
-process.on('uncaughtException', (err) => {
-  console.error(`Uncaught Exception: ${err}`.red);
-});
+// process.on('uncaughtException', (err) => {
+//   console.error(`Uncaught Exception: ${err}`.red);
+// });
 
 client.login(process.env.TOKEN);

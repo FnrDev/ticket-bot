@@ -15,6 +15,12 @@ module.exports = {
                 ephemeral: true
             })
         }
+        if (!config.staff || !config.managers) {
+            return interaction.reply({
+                content: `:x: i can't find staff / managers role, use \`/config role\` to add them.`,
+                ephemeral: true
+            })
+        }
         const userHasTicket = getAllData.filter(r => r.data.user === interaction.user.id);
         const filterGuildTickets = getAllData.filter(r => r.data.guild === interaction.guild.id);
         const ticketCatgory = interaction.guild.channels.cache.get(config.category);

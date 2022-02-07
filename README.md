@@ -2,6 +2,8 @@
 
 
 ## ticket discord bot [Features](#-features).
+---
+## Need help? join discord server [Invite Link](https://discord.gg/hHweGgGqXa)
 
 ---
 ### Note: Node.js 16.6.0 or newer is required.

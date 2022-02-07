@@ -5,6 +5,7 @@ module.exports = {
     name: "config",
     description: "Configuration ticket system.",
     options: configOptions,
+    permission: "ADMINISTRATOR",
     run: async(interaction, client) => {
         const replyMessage = {
             content: "Config has been set!"

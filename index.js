@@ -25,14 +25,9 @@ require('colors');
   });
   db.create("tickets");
   db.create("config");
+  db.create("blacklist");
 })();
 
-process.on('unhandledRejection', (err) => {
-  console.error(`Unhandled Rejection: ${err}`.red);
-});
-
-process.on('uncaughtException', (err) => {
-  console.error(`Uncaught Exception: ${err}`.red);
-});
+process.on('unhandledRejection', console.log)
 
 client.login(process.env.TOKEN);

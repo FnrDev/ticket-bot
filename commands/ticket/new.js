@@ -7,6 +7,13 @@ module.exports = {
     category: "ticket",
     usage: "/new",
     run: async(interaction, client) => {
+        const isUserBlacklisted = await client.db.get('blacklist', interaction.user.id);
+        if (isUserBlacklisted) {
+            return interaction.reply({
+                content: ':x: You have been blacklisted from creating tickets.',
+                ephemeral: true
+            })
+        }
         const getAllData = await client.db.all("tickets");
         const config = await client.db.get('config', interaction.guild.id);
         if (!config) {

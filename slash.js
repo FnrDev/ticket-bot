@@ -1,5 +1,5 @@
 const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { Routes } = require('discord-api-types/v10');
 const path = require('path');
 require('colors')
 require('dotenv').config();
@@ -11,7 +11,7 @@ readdirSync("./commands/").map(async dir => {
 	commands.push(require(path.join(__dirname, `./commands/${dir}/${cmd}`)))
     })
 })
-const rest = new REST({ version: "9" }).setToken(process.env.TOKEN);
+const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
 (async () => {
 	try {
